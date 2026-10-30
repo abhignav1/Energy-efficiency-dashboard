@@ -125,21 +125,106 @@ I created one-to-many relationships with single-direction filtering to support c
 
 This structure improves model organization and allows measures to respond to report filters.
 
-### Phase 4 — DAX Measures and Business Metrics
+## DAX Measures & Business Logic
 
-I developed measures to support analytical reporting, including:
+To support accurate business reporting and historical performance comparisons, I developed reusable DAX measures within the Power BI semantic model.
 
-- Total Electricity Sales (MWh)
-- Total Revenue
-- Total Customers
-- Previous-Year Sales
-- Year-over-Year Sales Growth
-- Sales Difference
-- Revenue Growth
-- Revenue per Customer
-- Revenue per MWh
+These measures dynamically respond to Year, State, and Utility filters, allowing users to analyze electricity performance at different levels.
 
-These calculations support comparisons of annual utility performance and the relationship between electricity sales, customer counts, and revenue.
+### 1. Total Electricity Sales (MWh)
+
+```dax
+Total Sales MWh =
+SUM(FactSales[Total Sales Megawatthours])
+```
+
+**Business Purpose:** Calculates total reported electricity sales for the selected reporting period, state, or utility.
+
+### 2. Total Revenue
+
+```dax
+Total Revenue ($) =
+SUM(FactSales[Total Revenue Thousand Dollars]) * 1000
+```
+
+**Business Purpose:** Converts reported revenue from thousands of dollars into actual dollar values, enabling consistent financial analysis.
+
+### 3. Total Customers
+
+```dax
+Total Customers =
+SUM(FactSales[Total Customer Count])
+```
+
+**Business Purpose:** Calculates the reported customer count for the selected reporting context, subject to validation of overlapping service records.
+
+### 4. Previous Year Sales
+
+```dax
+Previous Year Sales =
+VAR CurrentYear = SELECTEDVALUE(DimYear[Year])
+RETURN
+IF(
+    NOT ISBLANK(CurrentYear),
+    CALCULATE(
+        [Total Sales MWh],
+        REMOVEFILTERS(DimYear),
+        DimYear[Year] = CurrentYear - 1
+    )
+)
+```
+
+**Business Purpose:** Retrieves electricity sales from the previous reporting year while preserving applicable State and Utility filters.
+
+### 5. Year-over-Year Sales Growth
+
+```dax
+Sales Growth % =
+DIVIDE(
+    [Total Sales MWh] - [Previous Year Sales],
+    [Previous Year Sales]
+)
+```
+
+**Business Purpose:** Measures the percentage increase or decrease in electricity sales compared with the preceding year.
+
+This helps identify increasing or declining demand across utilities and geographic regions.
+
+### 6. Revenue per Customer
+
+```dax
+Revenue Per Customer =
+DIVIDE(
+    [Total Revenue ($)],
+    [Total Customers]
+)
+```
+
+**Business Purpose:** Measures reported revenue relative to customer count, providing an additional perspective on customer-level revenue performance.
+
+### 7. Revenue per MWh
+
+```dax
+Revenue Per MWh =
+DIVIDE(
+    [Total Revenue ($)],
+    [Total Sales MWh]
+)
+```
+
+**Business Purpose:** Calculates realized revenue per megawatt-hour to support comparisons across utilities and reporting years.
+
+### Data Validation Considerations
+
+Before interpreting these metrics, the reporting data must be reviewed for duplicate totals, overlapping service classifications, inconsistent units, and missing values.
+
+Year-over-year calculations require a single year in the evaluation context. Customer-based ratios also require consistent customer definitions and reporting coverage.
+
+### Key Technical Takeaway
+
+Developing these measures helped me strengthen my understanding of DAX filter context, year-over-year comparisons, data modeling, and the importance of consistent business definitions.
+
+Rather than creating isolated calculations for each visual, I structured the measures for reuse across executive dashboards, state comparisons, and utility-level reporting.
 
 ### Phase 5 — Interactive Dashboard Development
 
