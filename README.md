@@ -42,7 +42,7 @@ These challenges can affect reporting efficiency, consistency, and confidence in
 
 ## 3. Connection to My Unitil Experience
 
-During my Energy Efficiency Business Intelligence internship at Unitil Corporation (June–August 2025), I worked with SQL, Excel, Power BI, operational data, and reporting activities.
+During my Energy Efficiency Business Intelligence internship at Unitil Corporation, I worked with SQL, Excel, Power BI, operational data, and reporting activities.
 
 My responsibilities included supporting KPI dashboards, analyzing energy consumption and operational information, improving reporting workflows, and investigating data issues.
 
@@ -255,15 +255,6 @@ It is inspired by reporting challenges encountered during my Unitil experience, 
 The dashboard should not be treated as a validated reproduction of official Unitil performance or internal reporting.
 
 Production deployment, automated live-source connectivity, and scheduled refresh monitoring are potential future enhancements.
-
-## 12. Professional Background
-
-**Energy Efficiency Business Intelligence Intern — Unitil Corporation**  
-June 2025 – August 2025
-
-My experience with energy and operational reporting helped shape my interest in improving data quality, simplifying reporting workflows, and using business intelligence technologies to support better decisions.
-
-This project is a practical demonstration of those interests, combining technical troubleshooting, data transformation, dimensional modeling, and executive-level reporting.
 
 ---
 
